@@ -9,22 +9,31 @@ const app = express();
 
 // Middleware
 
-// handling cors erros
+// CORS configuration
 app.use(cors({
   origin: [
-    process.env.FRONTEND_URL, 
+    process.env.FRONTEND_URL, // Load frontend URL from environment variable
     'http://localhost:3000', 
-    'https://booknest-app.netlify.app' // Added the Netlify deployed frontend URL
-  ], 
+    'https://booknest-app.netlify.app' // Added additional frontend URL explicitly
+  ],
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include HTTP methods for preflight
+  allowedHeaders: ['Content-Type', 'Authorization'] // Include allowed headers
 }));
 
+// Handle preflight requests explicitly
+app.options('*', cors());
 
+// To log incoming origins for debugging
+// app.use((req, res, next) => {
+//   console.log(`Incoming request from Origin: ${req.headers.origin}`);
+//   next();
+// });
 
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // To parse URL-encoded bodies
 
-// For multer (serving images)
+// For serving images (static files)
 app.use('/uploads', express.static('uploads'));
 
 // Import routes
