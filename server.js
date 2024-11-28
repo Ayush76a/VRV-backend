@@ -11,9 +11,14 @@ const app = express();
 
 // handling cors erros
 app.use(cors({
-  origin: [process.env.FRONTEND_URL, 'http://localhost:3000'], // Allow both deployed frontend URL and local development URL
+  origin: [
+    process.env.FRONTEND_URL, 
+    'http://localhost:3000', 
+    'https://booknest-app.netlify.app' // Added the Netlify deployed frontend URL
+  ], 
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 }));
+
 
 
 app.use(express.json()); // To parse JSON bodies
